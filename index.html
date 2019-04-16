@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>InfoVis P5</title>
+	<!-- Always include D3 first. -->
+	<script src="http://d3js.org/d3.v4.min.js"></script>
+	<!-- Include main.js, which is where all our code lives -->
+	<script src="main.js"></script>
+	<!-- Include any styles we want to add to our page -->
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Aircraft Incidents</h1>
+    
+	<div id="graph">
+        <div id="fatality">
+                <p>There are always good years and bad years for aviation, as the below table of fatalities since 1995 shows. </p>
+                <p>In good years, there are less than 100 deaths.</p>
+                <p>But in bad years such as 2015, there were 1013 world wide.</p>
+                <p>There seems to be a general trend of increasing fatalities, but when considering the number of people flying everyday, that number is miniscule.</p>
+            <strong>Year:</strong> <span id="fatality_chart_year"></span><br/>
+            <strong>Fatalities:</strong> <span id="fatality_chart_fatalities"></span><br/>
+            <p></p>
+        </div>
+        <div id="severity">
+
+        </div>
+    </div>
+    
+</body>
+</html>
