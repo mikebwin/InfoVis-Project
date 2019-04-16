@@ -5,12 +5,15 @@ function start() {
 var graph = document.getElementById("graph")
 var fatality = document.getElementById("fatality")
 var severity = document.getElementById("severity")
+var bubble = document.getElementById("map")
 
 //width and height to define svgs
-var width_fatality = 615
+var width_fatality = 635
 var height_fatality = 600
 var width_severity = 600
 var height_severity = 600
+var width_map = 800
+var height_map = 600
 
 var fatality_graph = d3.select(fatality)
     .append("svg")
@@ -22,13 +25,75 @@ var severity_graph = d3.select(severity)
     .attr("width", width_fatality)
     .attr("height", height_fatality)
 
+var bubble_map = d3.select(bubble)
+    .append("svg")
+    .attr("width", width_map)
+    .attr("height", height_map)
+
 //FATALITIES STUFF
 
-var bars = fatality_graph.append('g').attr("id", "fatalities_by_year");
-var xScaleFatality = d3.scaleLinear().range([45, width_fatality-20])
+var bars = fatality_graph.attr("id", "fatalities_by_year");
+var xScaleFatality = d3.scaleLinear().range([45, width_fatality-40])
 var yScaleFatality = d3.scaleLinear().range([height_fatality - 50, 0])
 var yAxisFatality = d3.axisLeft(yScaleFatality)
 var xAxisFatality = d3.axisBottom(xScaleFatality)
+
+var freq_threshold = 100
+var color = "yellow"
+d3.select(fatality).append("p")
+.append("button")
+    .style("border", "1px solid black")
+.text("Filter Fatalities")
+.on("click", function(){
+    console.log(bars.selectAll(".fatality_bar")
+    .filter(function(d){
+        return d.value > freq_threshold;
+     }))
+    bars.selectAll(".fatality_bar")
+        .filter(function(d){
+            return d.value > freq_threshold;
+         })
+        .transition()
+        .duration(function(d) {
+            return Math.random() * 500;
+        })
+        .delay(function(d) {
+            return Math.random() * 300
+        })
+        .attr("height", function(d){
+            return yScaleFatality(0) - yScaleFatality(d.value)
+        })
+    bars.selectAll(".fatality_bar")
+        .filter(function(d){
+            return d.value <= freq_threshold;
+        })
+        .transition()
+        .duration(function(d) {
+            return Math.random() * 500;
+        })
+        .delay(function(d) {
+            return Math.random() * 300            
+        })
+        .attr("height", function(d){
+            return 0
+        })
+    })
+
+d3.select(fatality)
+    .append('p')
+    .append('input')
+    .attr('type', 'text')
+    .attr('name', 'textInput')
+    .attr('placeholder', 'Default = 100')
+    .on('change', changefreq)
+
+function changefreq() {
+    selectValue = d3.select('input').property('value')
+    if (selectValue == ""){
+        selectValue = 100
+    }
+    freq_threshold = selectValue
+}
 
 //SEVERITY STUFF
 var pie_chart = severity_graph.append('g').attr("id", "severity_breakdown")
@@ -36,6 +101,28 @@ var pie_chart = severity_graph.append('g').attr("id", "severity_breakdown")
 var radius_severity = (Math.min(height_severity, width_severity) - 30)/ 2
 var color = d3.scaleOrdinal().range(["#363847","#aeb2bf","#e1575c", "#818a8b"])
 
+//MAP STUFF
+// var map = bubble_map.append("g")
+
+// var projection = d3.geo.albersUsa()
+//     .scale(1070)
+//     .translate([width_map / 2, height_map / 2]);
+
+// var path = d3.geo.path()
+//     .projection(projection);
+
+// d3.json("us.json", function(error, us){
+//     if (error) throw error;
+//     map.append("g")
+//         .attr("id", "states")
+//         .selectAll("path")
+//         .data(topojson.feature(us, us.objects.states).features)
+//         .enter().append("path")
+//         .attr("d", path)
+//         .on("click", function(d){
+
+//         })
+// })
 
 //START DATA AND D3
 d3.csv("aircraft_incidents.csv", function(csv){
@@ -64,6 +151,15 @@ d3.csv("aircraft_incidents.csv", function(csv){
         })
     }).entries(csv)
 
+    fatalities_by_year.sort(compare)
+
+    function compare(a, b) {
+        if (a.key > b.key) return 1
+        if (b.key > a.key) return -1
+
+        return 0;
+    }
+
     xScaleFatality.domain([d3.min(fatalities_by_year, function(d){
         return d.key;
     }), d3.max(fatalities_by_year, function(d){
@@ -76,12 +172,25 @@ d3.csv("aircraft_incidents.csv", function(csv){
 
     bars.append('g')
         .attr('class', 'y-axis')
-        .attr('transform', 'translate(35, 0)')
+        .attr('transform', 'translate(55, -20)')
         .call(yAxisFatality)
     bars.append('g')
         .attr('class', 'x-axis')
-        .attr('transform', 'translate(0, 560)')
+        .attr('transform', 'translate(20, 545)')
         .call(xAxisFatality)
+
+    bars.append("text")
+        .attr("transform", "translate(" + (width_fatality/2) + "," + (height_fatality - 20) + ")")
+        .style("test-anchor", "middle")
+        .text("Year")
+    
+    bars.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0)
+        .attr("x", 0 - (height_fatality/2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle   ")
+        .text("Fatalities")
     
     
     var first = null
@@ -92,10 +201,10 @@ d3.csv("aircraft_incidents.csv", function(csv){
         .append('rect')
         .attr('class', 'fatality_bar')
         .attr('x', function(d, i){
-            return i * (600 / 25) + 40 + i * 2
+            return i * (600 / 25) + 60 + i * 2
         })
         .attr('y', function(d, i){
-            return yScaleFatality(d.value)
+            return yScaleFatality(d.value) - 20
         })
         .attr('height', function(d, i){
             return yScaleFatality(0) - yScaleFatality(d.value)
@@ -132,6 +241,8 @@ d3.csv("aircraft_incidents.csv", function(csv){
     }	
     }
 
+    
+
     // START LOCATION OF PERCENTAGE OF INJURY SEVERITY
     
     {
@@ -141,6 +252,8 @@ d3.csv("aircraft_incidents.csv", function(csv){
     }).rollup(function(v){
         return v.length
     }).entries(csv)
+
+    console.log(breakdown)
 
     var pie = d3.pie().value(function(d){
         return d.value;
@@ -177,7 +290,16 @@ d3.csv("aircraft_incidents.csv", function(csv){
         
     }
     
+    // START MAP
+    bubble_map.append("rect")
+        .attr("class", "background")
+        .attr("width", width_map)
+        .attr("height", height_map)
+        .on("click", function(d){
 
+        })
+
+    
 })
 
 }
