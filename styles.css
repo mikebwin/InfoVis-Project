@@ -10,6 +10,7 @@
     color: steelblue;
 }
 
-#text {
-    color: steelblue;
-}
+.states {
+    fill: #ccc;
+    stroke: #fff;
+  }
