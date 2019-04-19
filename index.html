@@ -15,30 +15,71 @@
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Aircraft Incidents</h1>
+    <h1>Analyzing Aircraft Incident Data from 1995-2016</h2>
+    <h2>Info Visualization P5 by Yuan Zhang and Hyunjae Lee</h2>
     
 	<div id="graph">
         <div id="fatality">
-                <p>There are always good years and bad years for aviation, as the below table of fatalities since 1995 shows. </p>
-                <p>In good years, there are less than 100 deaths.</p>
-                <p>But in bad years such as 2015, there were 1013 world wide.</p>
-                <p>There seems to be a general trend of increasing fatalities, but when considering the number of people flying everyday, that number is miniscule.</p>
-            <strong>Year:</strong> <span id="fatality_chart_year"></span><br/>
+            <p>For any mode of transportation, there are always both good and bad years.
+            <br>Using the dataset provided, we wanted to explore potential patterns in
+            <br>aircraft accidents over a 21 year period ending 2016.</p>
+                    
+            <p>We started out by analyzing yearly frequency of accidents for any patterns.
+            <br>Our expectation prior to creating the first visualization was that we
+            <br>would see a stable level of global incidents - mainly because we
+            <br>anticipated the growth in the airline industry and popularity of flying
+            <br>would proportionally increase the number of accidents while improvements in
+            <br>technology would offset some of the growth.</p>
+                    
+            <p>Below in the table of fatalities since 1995, we can see that there are only
+            <br>five good years in which there are less than 100 deaths; in bad years such
+            <br>as 1996, there were up to 1013 deaths worldwide.</p>
+                    
+            <p>Although there is an appearance of wide variation in terms of fatality
+            <br>count, we can clearly see that that the period leading up to 2010 has a
+            <br>consistently higher death count than the period after (with the exception
+            <br>of 2014). When we researched the fact, we found that the crash of the
+            <br><a href="https://www.cnbc.com/2019/02/13/colgan-air-crash-10-years-ago-reshaped-us-aviation-safety.html">turboprop plane in 2009</a> prompted US federal regulations requiring more rest
+            <br>and training for pilots. Given that 1,036 of our data points were US
+            <br>flights, this might have been a statistically significant legal step in improving
+            <br>aircraft safety.</p>
+                    
+            <p>Finally, we concluded that the general trend of decreasing fatalities in light
+            <br>of the growing number of people flying everyday could imply a gradual
+            <br>technological or regulatory improvement.</p><strong>Year:</strong> <span id="fatality_chart_year"></span><br/>
+            
             <strong>Fatalities:</strong> <span id="fatality_chart_fatalities"></span><br/>
             <p></p>
         </div>
         <div id="severity">
-            <p>Below is a pie chart that shows the likelihood of the types of trouble an airplane might run into.</p>
-            <p>There are three categories: fatal, non-fatal, and incident. A fourth "unavailable" category is simply from no data</p>
-            <p>The number of fatal crashes is just a sliver of out of all the problems airplanes run into.</p>
-            <p>While flying, it's most likely you will not perish.</p>
+            <p>After initially looking at fatality rates, we wanted to take a look at
+            <br>how severe the injuries were overall. Taking a look at the modified pie
+            <br>chart we find that the largest groups are non-fatal and incident which
+            <br>seems to indicate that though there is a high degree of accidents, the
+            <br>majority do not result in any heavy casualties. In the process of making
+            <br>the chart, we excluded the "unavailable" category which had a 63 count out
+            <br>of 1987 and should not have materially affected the results.</p>
         </div>
         <div id="phase">
-            
+            <p>Following our realization that most airline accidents do not result in
+            <br>sustained injuries, we wanted to see if there was a particular phase of the
+            <br>flight that is more susceptible to accidents. There was a fairly even
+            <br>distribution with a particularly high likelihood of accidents in takeoff,
+            <br>taxi, or landing. This is interesting because it means that interactions on
+            <br>the ground lead to more accidents than in the air.</p>    
         </div>
         <div id="map">
-
+            <p>After analyzing the various distributions of accidents across these
+            <br>factors, we wanted to test for if geographic  might influence accident
+            <br>frequency and magnitude. We plotted the latitude and longitude of every
+            <br>accident on the map - what we found was that almost all of the accidents
+            <br>with significant casualties were located in the US.</p>
         </div>
+            <p>We determined several possibilities: 1) this might be an American
+            <br>dataset or a dataset of US airline flights, 2) accidents in the US might be
+            <br>better documented than elsewhere allowing more datapoints, or 3) the US
+            <br>actually has the highest number of accidents in the world (which is
+            <br>unlikely given regulatory environment, airplane manufacturing, etc.).</p>
     </div>
     
 </body>
